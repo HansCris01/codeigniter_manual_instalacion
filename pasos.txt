@@ -1,0 +1,152 @@
+Crud con Codeigniter 4
+
+Requisitos funciona con PHP 8
+
+1) configuracion
+
+vamos a la pagina oficial de Codeigniter 4
+
+Installation/composer Installation
+
+de ahi vamos a buscar Installation de bajo de ahi esta el comando: 
+
+composer create-project codeigniter4/appstarter nombre_proyecto
+
+NOTA: tener encuenta de tener descomentado el intl en nuestro php ini
+
+ir a php ini buscar en el block de notas la palabra: intl
+
+econcontraras esto: ;extension=intl
+
+Quitale el ; 
+
+Tiene que quedar asi: extension=intl
+
+2) Configuracion env
+
+   vamos a buscar el: database= 
+   escribimos nuestrabase de datos: crud_code
+
+3) vamos descomentar borrando el '#' #CI_ENVIRONMENT = production cambiarlo a development en el archivo .env  
+   Eso nos ayudara en decirnos los errores    
+
+4) vamos a ir a app/Config/App.php
+   configurar la baseUrl vamos a cambiar el localhost
+   por nuestra url del proyecto.
+
+5) Configurar la conexion: 
+
+   app/Config/Database.php
+
+   vamos a escribir el nombre de nuestra base de datos en la linea 32
+
+   Donde dice: DBDebug  linea 36 vamos a borrar true y vamos a escribir
+   este codigo: (ENVIRONMENT !== 'production'),
+
+6) vamos a views/welcome_message.php
+    todo el codigo que contiene este archivo sera borrado.
+
+   EL archivo  welcome_message.php va a ser cambiado por el 
+   nombre: listado.php
+
+7) vamos al controller que esta en App/Controllers/Home.php
+
+    cambiarmos donde duce return view('welcome_message');
+     lo cambiamos por return view('listado');
+ 
+    vamos a renombrar el controlador Home por Crud
+
+    vamos a la ruta: app/Config/Routes.php
+
+    
+     Dentro del archivo Routes.php
+
+     en la linea 14 y 32 dice Home cambiarlo por Crud
+
+
+8) continuar video: https://www.youtube.com/watch?v=TG0wht9j18I&list=PLoRfWwOOv4jxNRULa3V7xBaTtAwyijVTd&index=3
+
+   programamos la vista app/views/ 
+   _ vamos a crear la vistas como listar y editar
+
+   programamos la vista app/Controllers/Crud.php
+   _ vamos crear las funciones
+
+  _ vamos a crear nuestro archivo model en la carpeta 
+    app/Models/
+
+9) Migracion, comando para crear: 
+   
+   php spark migrate:create t_personas
+
+
+   ahora vamos a nuestro archivo con esta direccion de carpeta:
+
+    App/Database/mi_nombre_de_mi_migracion_t_personas
+
+    No genero un codigo simple pero vamos a ir a la pagina oficial 
+    de codeigniter 
+    ir a Managing Database/Database Migrations 
+
+    copiamos el codigo a nuestro proyecto 
+
+    y vamos a modificar el codigo 
+
+10) Ejecutar migracion:
+
+   Antes de ejecutar revisar tu archivo Database.php 
+   en username => '' si eso esta vacio colocar root
+
+   comando: php spark migrate t_personas 
+
+  recuerda t_personas es el nombre de tu archivo de migracion 
+  en caso de migrar una BD es archivo por archivo que es tabla por tabla.
+
+11) Programar el controlador para la funcion listar
+    tambien vamos a progamar nuestro model
+
+12) programamos controller, model, vistas y rooter para 
+    las nuevas rutas de agregar, editar, eliminar
+
+
+en la linea 38 hasta la linea 51 se agrega este codigo en nuestro 
+Routes.php 
+
+Agregar solo estos lineas en Router Setup
+
+
+$routes->set404Override();  //Esto biene por defecto pero en nuestro caso no esta colocarlo manual
+$routes->setAutoRoute(true); //Esto biene por defecto pero en nuestro caso no esta colocarlo manual
+
+
+
+
+/**
+ * --------------------------------------------------------------------
+ * Route Definitions
+ * --------------------------------------------------------------------
+ */
+
+// We get a performance increase by specifying the default
+// route since we don't have to scan directories.
+$routes->get('/', 'Crud::index');
+$routes->get('/obtenerNombre/(:any)', 'Crud::obtenerNombre/$1');
+$routes->get('/eliminar/(:any)', 'Crud::eliminar/$1');
+$routes->post('/crear', 'Crud::crear');
+$routes->post('/actualizar', 'Crud::actualizar');
+
+
+En la linea 7 a 12 debajo de $routes = service::routes();
+
+// Load the system's routing file first, so that the app and ENVIRONMENT
+// can override as needed.
+if (file_exists(SYSTEMPATH . 'Config/Routes.php'))
+{
+	require SYSTEMPATH . 'Config/Routes.php';
+}
+
+
+
+
+
+
