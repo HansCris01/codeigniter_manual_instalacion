@@ -146,6 +146,8 @@ if (file_exists(SYSTEMPATH . 'Config/Routes.php'))
 }
 
 
+//////Nota:  comando para eliminar migraciones en caso salga error en migraciones foreign key
+      php spark migrate:refresh
 
 
 
